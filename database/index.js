@@ -1,9 +1,28 @@
 const mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost/fetcher');
 
-let repoSchema = mongoose.Schema({
-  // TODO: your schema here!
+// added 'new' in front of 'mongoose.Schema'
+let repoSchema = new mongoose.Schema({
+  login: String,
+  repo_id: {type: Number, unique: true},
+  name: String,
+  html_url: String,
+  created_at: Date,
+  forks: Number
 });
+
+// let repoSchema = new mongoose.Schema({
+//   login: String,
+//   repos: [
+//     {
+//       id: {type: Number, unique: true},
+//       name: String,
+//       html_url: String,
+//       created_at: Date,
+//       stargazers_count: Number
+//     }
+//   ]
+// });
 
 let Repo = mongoose.model('Repo', repoSchema);
 
