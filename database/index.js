@@ -3,11 +3,11 @@ mongoose.connect('mongodb://localhost/fetcher');
 
 // added 'new' in front of 'mongoose.Schema'
 let repoSchema = new mongoose.Schema({
-  login: String,
-  repo_id: {type: Number, unique: true},
-  name: String,
-  html_url: String,
-  created_at: Date,
+  username: String,
+  id: {type: Number, unique: true},
+  repo: String,
+  url: String,
+  created: Date,
   forks: Number
 });
 
