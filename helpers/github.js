@@ -11,15 +11,25 @@ let getReposByUsername = async (username) => {
   let options = {
     method: 'GET',
     data: username,
-    url: 'https://api.github.com',
+    url: `https://api.github.com/users/${username}/repos`,
     headers: {
       'User-Agent': 'request',
       'Authorization': `token ${config.TOKEN}`
     }
   };
 
-  let response = await axios(options);
-  return response;
+  try {
+    // let response = await axios(options);
+    // console.log(response.data)
+    // return response;
+    return await axios(options);
+  } catch (error) {
+    console.log(error);
+  }
 }
+
+// let x = getReposByUsername('octocat')
+
+// console.log('helper ->', x)
 
 module.exports.getReposByUsername = getReposByUsername;
