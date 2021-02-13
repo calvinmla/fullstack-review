@@ -1,27 +1,31 @@
 const express = require('express');
 const bodyParser = require('body-parser')
 const getReposByUsername = require('../helpers/github.js');
-const save = require('../database/index.js');
+const {save, find} = require('../database/index.js');
 let app = express();
 
 app.use(express.static(__dirname + '/../client/dist'));
 app.use(bodyParser.urlencoded({extended: true}));
 
+// POST request to /repos
 app.post('/repos', function (req, res) {
   let username = req.body.login;
   getReposByUsername.getReposByUsername(username)
     .then(userData => {
-      save.save(userData);
+      save.userData;
+      res.status(201).send(`Got ${username}'s repos and added to the database!`);
     })
     .catch(error => {
       if (error) throw error;
     });
-  res.send('working on it');
 });
 
+// GET request to /repos
 app.get('/repos', function (req, res) {
-  // TODO - your code here!
-  // This route should send back the top 25 repos
+  let results = find()
+    .then(repos => {
+      res.status(200).send(`<p>${repos}</p>`);
+    })
 });
 
 let port = 1128;

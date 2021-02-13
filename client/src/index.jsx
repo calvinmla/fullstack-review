@@ -10,16 +10,17 @@ class App extends React.Component {
     this.state = {
       repos: []
     }
-
   }
 
   search (term) {
     console.log(`${term} was searched`);
-    // TODO
     $.ajax({
       method: 'POST',
       url:  '/repos',
-      data: {login: term}
+      data: {login: term},
+      success: (data) => {
+        console.log(data);
+      }
     })
   }
 

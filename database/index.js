@@ -34,13 +34,31 @@ let save = (repos) => {
   }
 }
 
-// Repo.find((err, repos) => {
-//   if (err) console.log(err);
-//   console.log(repos);
-// })
+let find = async () => {
+  let top25 = [];
+  let results = await Repo.find((err, repos) => {
+    if (err) console.log(err);
+    return repos;
+  })
+  .then(allRepos => {
+    let sorted = allRepos.sort((a, b) => {
+      return b._doc.forks - a._doc.forks;
+    })
+    return sorted;
+  })
+  .then(sortedRepos => {
+    for (let i = 0; i < 25; i++) {
+      top25.push(sortedRepos[i]._doc.repo)
+    }
+  })
+  .catch(error => {
+    if (error) console.log(error);
+  })
+  return top25;
+}
 
 module.exports.save = save;
-
+module.exports.find = find;
 
 /* Initial Schema */
 // let repoSchema = new mongoose.Schema({
