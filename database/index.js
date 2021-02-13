@@ -35,20 +35,28 @@ let save = (repos) => {
 }
 
 let find = async () => {
-  let top25 = [];
-  let results = await Repo.find((err, repos) => {
+  const top25 = [];
+  const results = await Repo.find((err, repos) => {
     if (err) console.log(err);
     return repos;
   })
   .then(allRepos => {
-    let sorted = allRepos.sort((a, b) => {
+    const sorted = allRepos.sort((a, b) => {
       return b._doc.forks - a._doc.forks;
     })
     return sorted;
   })
   .then(sortedRepos => {
     for (let i = 0; i < 25; i++) {
-      top25.push(sortedRepos[i]._doc.repo)
+
+      // Getting top 25 repo names only
+      // top25.push(sortedRepos[i]._doc.repo);
+
+      // Getting top 25 repos with url
+      const tempObj = {};
+      tempObj.repo = sortedRepos[i]._doc.repo;
+      tempObj.url = sortedRepos[i]._doc.url;
+      top25.push(tempObj);
     }
   })
   .catch(error => {
