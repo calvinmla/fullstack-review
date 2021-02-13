@@ -34,6 +34,11 @@ let save = (repos) => {
   }
 }
 
+// Repo.find((err, repos) => {
+//   if (err) console.log(err);
+//   console.log(repos);
+// })
+
 module.exports.save = save;
 
 

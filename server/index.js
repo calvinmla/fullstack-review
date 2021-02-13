@@ -13,9 +13,9 @@ app.post('/repos', function (req, res) {
     .then(userData => {
       save.save(userData);
     })
-    // .catch(error => {
-    //   if (error) throw error;
-    // });
+    .catch(error => {
+      if (error) throw error;
+    });
   res.send('working on it');
 });
 
