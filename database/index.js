@@ -1,6 +1,8 @@
 const mongoose = require('mongoose');
+// Added promise
 mongoose.Promise = global.Promise;
 mongoose.connect('mongodb://localhost/fetcher', {
+  // Added condition
   useMongoClient: true
 });
 
@@ -28,14 +30,20 @@ let save = (repos) => {
       forks: data.forks
     })
     entry.save((err, result) => {
-      if (err) console.log(err);
-      console.log(`Saved ${result}!`)
+      if (err.code === 11000) {
+        console.log('This repo already exists');
+      } else if (err) {
+        console.log(err);
+      } else {
+        console.log(`Saved ${result.repo} repo`);
+      }
     })
   }
 }
 
+// Created find function to query database
 let find = async () => {
-  const top25 = [];
+  let top25 = [];
   const results = await Repo.find((err, repos) => {
     if (err) console.log(err);
     return repos;
@@ -48,15 +56,14 @@ let find = async () => {
   })
   .then(sortedRepos => {
     for (let i = 0; i < 25; i++) {
-
-      // Getting top 25 repo names only
-      // top25.push(sortedRepos[i]._doc.repo);
-
-      // Getting top 25 repos with url
+      /* -----Getting top 25 repos with url----- */
       const tempObj = {};
       tempObj.repo = sortedRepos[i]._doc.repo;
       tempObj.url = sortedRepos[i]._doc.url;
       top25.push(tempObj);
+
+      /* -----Getting top 25 repo names only----- */
+      // top25.push(sortedRepos[i]._doc.repo);
     }
   })
   .catch(error => {
@@ -67,17 +74,3 @@ let find = async () => {
 
 module.exports.save = save;
 module.exports.find = find;
-
-/* Initial Schema */
-// let repoSchema = new mongoose.Schema({
-//   login: String,
-//   repos: [
-//     {
-//       id: {type: Number, unique: true},
-//       name: String,
-//       html_url: String,
-//       created_at: Date,
-//       stargazers_count: Number
-//     }
-//   ]
-// });
