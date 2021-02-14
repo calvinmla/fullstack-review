@@ -30,13 +30,9 @@ let save = (repos) => {
       forks: data.forks
     })
     entry.save((err, result) => {
-      if (err.code === 11000) {
-        console.log('This repo already exists');
-      } else if (err) {
-        console.log(err);
-      } else {
-        console.log(`Saved ${result.repo} repo`);
-      }
+      if (err.code === 11000) console.log('This repo already exists')
+      else if (err) console.log(err);
+      else console.log(`Saved ${result.repo} repo`);
     })
   }
 }
