@@ -2,3 +2,4 @@ node_modules
 client/dist/bundle.js
 config.js
 package-lock.json
+node-js-getting-started
