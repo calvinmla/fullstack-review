@@ -1,7 +1,12 @@
 const mongoose = require('mongoose');
 // Added promise
 mongoose.Promise = global.Promise;
-mongoose.connect('mongodb://localhost/fetcher', {
+// Added config variable for mongodb/mongoose
+let configVarMongo = process.env.mongo;
+if (configVarMongo === null || configVarMongo === '' || configVarMongo === undefined) {
+  configVarMongo = 'mongodb://localhost/fetcher';
+}
+mongoose.connect(configVarMongo, {
   // Added condition
   useMongoClient: true
 });
