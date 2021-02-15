@@ -29,7 +29,11 @@ app.get('/repos', (req, res) => {
     })
 });
 
-let port = 1128;
+// Added config variable for port
+let port = process.env.port;
+if (port === null || port === '' || port === undefined) {
+  port = 1128;
+}
 
 app.listen(port, function() {
   console.log(`listening on port ${port}`);
