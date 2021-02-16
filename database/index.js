@@ -13,8 +13,8 @@ mongoose.connect(configVarMongo, {
 
 // added 'new' in front of 'mongoose.Schema'
 let repoSchema = new mongoose.Schema({
-  username: String,
   id: {type: Number, unique: true},
+  username: String,
   repo: String,
   url: String,
   created: Date,
@@ -23,7 +23,7 @@ let repoSchema = new mongoose.Schema({
 
 let Repo = mongoose.model('Repo', repoSchema);
 
-let save = (repos) => {
+let save = async (repos) => {
   for (let i = 0; i < repos.data.length; i++) {
     let data = repos.data[i];
     let entry = new Repo({
@@ -35,8 +35,7 @@ let save = (repos) => {
       forks: data.forks
     })
     entry.save((err, result) => {
-      if (err.code === 11000) console.log('This repo already exists')
-      else if (err) console.log(err);
+      if (err) console.log(err);
       else console.log(`Saved ${result.repo} repo`);
     })
   }
@@ -45,7 +44,7 @@ let save = (repos) => {
 // Created find function to query database
 let find = async () => {
   let top25 = [];
-  const results = await Repo.find((err, repos) => {
+  await Repo.find((err, repos) => {
     if (err) console.log(err);
     return repos;
   })
@@ -56,12 +55,18 @@ let find = async () => {
     return sorted;
   })
   .then(sortedRepos => {
-    for (let i = 0; i < 25; i++) {
+    let length;
+    if (sortedRepos.length >= 25) {
+      length = 25;
+    } else {
+      length = sortedRepos.length
+    }
+    for (let i = 0; i < length; i++) {
       /* -----Getting top 25 repos with url----- */
-      const tempObj = {};
-      tempObj.repo = sortedRepos[i]._doc.repo;
-      tempObj.url = sortedRepos[i]._doc.url;
-      top25.push(tempObj);
+        const tempObj = {};
+        tempObj.repo = sortedRepos[i]._doc.repo;
+        tempObj.url = sortedRepos[i]._doc.url;
+        top25.push(tempObj);
 
       /* -----Getting top 25 repo names only----- */
       // top25.push(sortedRepos[i]._doc.repo);
