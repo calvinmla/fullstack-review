@@ -66,6 +66,7 @@ let find = async () => {
         const tempObj = {};
         tempObj.repo = sortedRepos[i]._doc.repo;
         tempObj.url = sortedRepos[i]._doc.url;
+        tempObj.forks = sortedRepos[i]._doc.forks;
         top25.push(tempObj);
 
       /* -----Getting top 25 repo names only----- */
